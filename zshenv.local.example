@@ -1,0 +1,43 @@
+# Local secrets and machine-specific config — DO NOT commit this file!
+# Copy to ~/.zshenv.local and fill in your actual values.
+# Sourced at the end of ~/.zshrc (interactive shells only).
+
+# NPM tokens
+export EH_MARKETING_UI_NPM_TOKEN=<your-token>
+export EWALLET_NPM_TOKEN=<your-token>
+export EH_NPM_TOKEN=<your-token>
+
+# Bundle/Gem credentials
+export BUNDLE_GEMS__CONTRIBSYS__COM=<your-credentials>
+export BUNDLE_GEM__FURY__IO=<your-credentials>
+
+# MeaWallet
+export MEAWALLET_USERNAME=<your-username>
+export MEAWALLET_PASSWORD=<your-password>
+export MEAWALLET_ENV=test
+
+# Atlassian
+export ATLASSIAN_API_TOKEN=<your-token>
+
+# GitHub tokens
+export EH_GITHUB_PKG_TOKEN=<your-token>
+export REVIEWDOG_GITHUB_API_TOKEN=<your-token>
+export DANGER_GITHUB_API_TOKEN=<your-token>
+export GITHUB_AUTH=<your-token>
+
+# Postman
+export POSTMAN_API_KEY=<your-key>
+
+# Node (work-specific)
+export NODE_TLS_REJECT_UNAUTHORIZED=0
+
+# Aikido security certificates (auto-managed — re-add if Aikido re-injects them)
+# aikido-endpoint-cert-config-start
+# export NODE_EXTRA_CA_CERTS="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-combined-ca.pem"
+# aikido-endpoint-cert-config-end
+# aikido-endpoint-pip-cert-config-start
+# export PIP_CERT="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-pip-combined-ca.pem"
+# export REQUESTS_CA_BUNDLE="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-pip-combined-ca.pem"
+# export POETRY_CERTIFICATES_PYPI_CERT="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-pip-combined-ca.pem"
+# export UV_SYSTEM_CERTS=true
+# aikido-endpoint-pip-cert-config-end

@@ -1,0 +1,23 @@
+clipboard-read = allow
+clipboard-write = allow
+clipboard-paste-protection = false
+
+theme = Kanagawa Wave
+
+font-size = 13
+font-thicken = true
+
+background-opacity = 0.96
+background-blur-radius = 20
+window-decoration = false
+macos-titlebar-style = hidden
+window-padding-x = 20
+window-padding-y = 18
+window-padding-balance = true
+
+cursor-style = bar
+cursor-style-blink = false
+adjust-cell-height = 10%
+minimum-contrast = 1.2
+unfocused-split-opacity = 0.65
+selection-invert-fg-bg = true
