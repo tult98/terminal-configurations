@@ -34,7 +34,7 @@ echo "=== Stowing packages ==="
 cd "$DOTFILES"
 for pkg in "${PACKAGES[@]}"; do
   echo "  stow $pkg"
-  stow "$pkg"
+  stow --target="$HOME" "$pkg"
 done
 
 echo ""

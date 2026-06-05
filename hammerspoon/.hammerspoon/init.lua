@@ -24,4 +24,15 @@ pasteHotkey = hs.hotkey.bind({"cmd"}, "v", function()
 end)
 
 
+-- Auto-reload config when any .lua file in the config dir changes, so edits to
+-- the repo-backed init.lua take effect without a manual menu-bar reload.
+hs.pathwatcher.new(hs.configdir, function(files)
+  for _, file in ipairs(files) do
+    if file:sub(-4) == ".lua" then
+      hs.reload()
+      return
+    end
+  end
+end):start()
+
 hs.alert.show("Hammerspoon config loaded")
