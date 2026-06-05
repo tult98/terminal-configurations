@@ -2,7 +2,7 @@
 set -e
 
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACKAGES=(zsh wezterm claude-code ghostty hammerspoon zellij)
+PACKAGES=(zsh wezterm claude-code ghostty hammerspoon)
 
 # Check stow is installed
 if ! command -v stow &>/dev/null; then
@@ -26,7 +26,6 @@ backup ~/.p10k.zsh
 backup ~/.config/wezterm/wezterm.lua
 backup ~/.claude/settings.json
 backup ~/.config/ghostty/config
-backup ~/.config/zellij/config.kdl
 backup ~/.hammerspoon/init.lua
 
 echo ""
@@ -36,6 +35,18 @@ for pkg in "${PACKAGES[@]}"; do
   echo "  stow $pkg"
   stow "$pkg"
 done
+
+echo ""
+echo "=== Installing CLI tools (Yazi file manager + preview deps) ==="
+if command -v brew &>/dev/null; then
+  # yazi: file manager · fd/bat/eza: fuzzy-find, syntax-highlighted preview, listings
+  # poppler/ffmpegthumbnailer/imagemagick/resvg: image/PDF/video/SVG previews
+  # sevenzip/jq: archive + JSON previews. (fzf, ripgrep already required by zsh setup)
+  brew install yazi fd bat eza poppler ffmpegthumbnailer sevenzip jq imagemagick resvg
+else
+  echo "  brew not found — skipping. Install manually:"
+  echo "  brew install yazi fd bat eza poppler ffmpegthumbnailer sevenzip jq imagemagick resvg"
+fi
 
 echo ""
 echo "=== Setting up local secrets ==="

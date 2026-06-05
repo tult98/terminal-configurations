@@ -62,3 +62,10 @@ Install these before or after running `install.sh`:
 
 **WezTerm**
 - [JetBrainsMono Nerd Font](https://www.nerdfonts.com/font-downloads)
+
+**Yazi** (terminal file manager — installed by `install.sh` via Homebrew, no custom config)
+- `yazi` `fd` `bat` `eza` `poppler` `ffmpegthumbnailer` `sevenzip` `jq` `imagemagick` `resvg`
+
+[Yazi](https://yazi-rs.github.io/) runs on its stock defaults — launch it with `yazi`,
+and press `~` (or `F1`) inside for the full keybinding list. The preview deps above power
+its image/PDF/video/archive previews.

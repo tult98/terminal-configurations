@@ -1,8 +1,3 @@
-# ── Zellij auto-launch (Ghostty only) ────────────────────────────────────────
-if [[ "$TERM_PROGRAM" == "ghostty" && -z "$ZELLIJ" ]]; then
-  exec zellij attach -c main
-fi
-
 # ── Powerlevel10k instant prompt ─────────────────────────────────────────────
 # Must be at top before any output to enable the instant prompt feature
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -129,6 +124,23 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 export DISABLE_SPRING=true
 # ws CLI shell integration (workspace tab-completion and env setup)
 command -v ws >/dev/null 2>&1 && eval "$(ws shell-init)"
+
+# ── Yazi launcher ─────────────────────────────────────────────────────────────
+# Ctrl+Y opens Yazi (stock config) and cd's the shell to wherever you quit — the
+# standard cwd-on-exit wrapper from the Yazi docs, bound to a key to dodge the
+# oh-my-zsh yarn plugin's `y`/`yy` aliases. (Default Ctrl+Y is yank/paste.)
+function _yazi_cd() {
+  local tmp cwd
+  tmp="$(mktemp -t yazi-cwd.XXXXXX)"
+  yazi --cwd-file="$tmp"
+  if cwd="$(command cat -- "$tmp")" && [[ -n "$cwd" && "$cwd" != "$PWD" ]]; then
+    builtin cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+  zle reset-prompt
+}
+zle -N _yazi_cd
+bindkey '^Y' _yazi_cd
 
 # ── Prompt & local overrides ──────────────────────────────────────────────────
 # p10k theme config — run `p10k configure` to regenerate ~/.p10k.zsh
