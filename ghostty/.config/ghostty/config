@@ -2,9 +2,10 @@ clipboard-read = allow
 clipboard-write = allow
 clipboard-paste-protection = false
 
-theme = Kanagawa Wave
+theme = TokyoNight
 
-font-size = 13
+font-family = JetBrainsMono Nerd Font
+font-size = 14
 font-thicken = true
 
 background-opacity = 0.96
@@ -12,11 +13,11 @@ background-blur-radius = 20
 window-decoration = false
 macos-titlebar-style = hidden
 window-padding-x = 20
-window-padding-y = 18
+window-padding-y = 10
 window-padding-balance = true
 
 cursor-style = bar
-cursor-style-blink = false
+cursor-style-blink = true
 adjust-cell-height = 10%
 minimum-contrast = 1.2
 unfocused-split-opacity = 0.65

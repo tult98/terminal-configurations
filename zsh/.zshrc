@@ -1,3 +1,8 @@
+# ── Zellij auto-launch (Ghostty only) ────────────────────────────────────────
+if [[ "$TERM_PROGRAM" == "ghostty" && -z "$ZELLIJ" ]]; then
+  exec zellij attach -c main
+fi
+
 # ── Powerlevel10k instant prompt ─────────────────────────────────────────────
 # Must be at top before any output to enable the instant prompt feature
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then

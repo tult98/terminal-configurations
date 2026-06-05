@@ -2,7 +2,7 @@
 set -e
 
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACKAGES=(zsh wezterm claude-code ghostty hammerspoon)
+PACKAGES=(zsh wezterm claude-code ghostty hammerspoon zellij)
 
 # Check stow is installed
 if ! command -v stow &>/dev/null; then
@@ -26,6 +26,7 @@ backup ~/.p10k.zsh
 backup ~/.config/wezterm/wezterm.lua
 backup ~/.claude/settings.json
 backup ~/.config/ghostty/config
+backup ~/.config/zellij/config.kdl
 backup ~/.hammerspoon/init.lua
 
 echo ""
