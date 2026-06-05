@@ -57,7 +57,6 @@ Install these before or after running `install.sh`:
 - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
 - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
 - [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search)
-- [fzf](https://github.com/junegunn/fzf)
 - [asdf](https://asdf-vm.com/)
 - [pyenv](https://github.com/pyenv/pyenv)
 

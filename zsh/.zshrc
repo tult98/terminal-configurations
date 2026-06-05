@@ -108,15 +108,14 @@ esac
 # Version managers and CLI tools that need shell integration
 
 # pyenv — python version shims
-PATH=$(pyenv root)/shims:$PATH
+if command -v pyenv >/dev/null 2>&1; then
+  PATH=$(pyenv root)/shims:$PATH
+fi
 
 # asdf — multi-language version manager
 . "/opt/homebrew/opt/asdf/libexec/asdf.sh"
 fpath=(${ASDF_DIR}/completions $fpath)
 autoload -Uz compinit && compinit
-
-# fzf — fuzzy finder key bindings and completion
-eval "$(fzf --zsh)"
 
 # ── React Native / Android ────────────────────────────────────────────────────
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
@@ -129,7 +128,7 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 # Disables Rails Spring pre-loader for more predictable boot times
 export DISABLE_SPRING=true
 # ws CLI shell integration (workspace tab-completion and env setup)
-eval "$(ws shell-init)"
+command -v ws >/dev/null 2>&1 && eval "$(ws shell-init)"
 
 # ── Prompt & local overrides ──────────────────────────────────────────────────
 # p10k theme config — run `p10k configure` to regenerate ~/.p10k.zsh
