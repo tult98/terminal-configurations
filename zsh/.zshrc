@@ -39,6 +39,42 @@ source $ZSH/oh-my-zsh.sh
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
+# Word jump — Option+arrows / Option+b/f move cursor by word
+bindkey '^[[1;3D' backward-word        # Option+Left
+bindkey '^[[1;3C' forward-word         # Option+Right
+bindkey '^[b'     backward-word        # Option+b
+bindkey '^[f'     forward-word         # Option+f
+
+# Visual word selection — Shift+Option+Arrow extends a highlighted region by word.
+# Backspace deletes the region if active, otherwise deletes one char.
+zle_highlight=(region:standout)
+
+function _select-backward-word() {
+  (( REGION_ACTIVE )) || zle set-mark-command
+  zle backward-word
+}
+zle -N _select-backward-word
+
+function _select-forward-word() {
+  (( REGION_ACTIVE )) || zle set-mark-command
+  zle forward-word
+}
+zle -N _select-forward-word
+
+function _delete-or-kill-region() {
+  if (( REGION_ACTIVE )); then
+    zle kill-region
+  else
+    zle backward-delete-char
+  fi
+}
+zle -N _delete-or-kill-region
+
+bindkey '^[[1;4D' _select-backward-word   # Shift+Option+Left
+bindkey '^[[1;4C' _select-forward-word    # Shift+Option+Right
+bindkey '^?'      _delete-or-kill-region  # Backspace → delete region or char
+bindkey '^[^?'    backward-kill-word      # Option+Backspace → delete word (no select)
+
 # ── PATH ──────────────────────────────────────────────────────────────────────
 # Core system paths
 export PATH="/opt/homebrew/bin:$PATH"
@@ -100,3 +136,14 @@ eval "$(ws shell-init)"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 # Machine-specific secrets and env vars (not tracked by git — see zshenv.local.example)
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
+# aikido-endpoint-cert-config-start
+# Allow Node.js tooling to trust the SafeChain MITM CA while preserving public roots.
+export NODE_EXTRA_CA_CERTS="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-combined-ca.pem"
+# aikido-endpoint-cert-config-end
+# aikido-endpoint-pip-cert-config-start
+# Allow Python package managers to trust the SafeChain MITM CA while preserving user-provided roots.
+export PIP_CERT="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-pip-combined-ca.pem"
+export REQUESTS_CA_BUNDLE="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-pip-combined-ca.pem"
+export POETRY_CERTIFICATES_PYPI_CERT="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-pip-combined-ca.pem"
+export UV_SYSTEM_CERTS=true
+# aikido-endpoint-pip-cert-config-end

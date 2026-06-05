@@ -10,11 +10,16 @@ font-thicken = true
 
 background-opacity = 0.96
 background-blur-radius = 20
-window-decoration = false
-macos-titlebar-style = hidden
+window-decoration = true
+macos-titlebar-style = native
+title = 👻
 window-padding-x = 20
 window-padding-y = 10
 window-padding-balance = true
+
+macos-option-as-alt = left
+keybind = shift+opt+left=csi:1;4D
+keybind = shift+opt+right=csi:1;4C
 
 cursor-style = bar
 cursor-style-blink = true

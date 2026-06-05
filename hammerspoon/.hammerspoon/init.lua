@@ -1,15 +1,15 @@
--- hs.hotkey.bind({"alt"}, "space", function()
---   local wezterm = hs.application.find("WezTerm")
---   if wezterm then
---     if wezterm:isFrontmost() then
---       wezterm:hide()
---     else
---       wezterm:activate()
---     end
---   else
---     hs.application.open("WezTerm")
---   end
--- end)
+hs.hotkey.bind({"alt"}, "space", function()
+  local ghostty = hs.application.find("Ghostty")
+  if ghostty then
+    if ghostty:isFrontmost() then
+      ghostty:hide()
+    else
+      ghostty:activate()
+    end
+  else
+    hs.application.open("Ghostty")
+  end
+end)
 
 local pasteHotkey
 pasteHotkey = hs.hotkey.bind({"cmd"}, "v", function()
@@ -22,5 +22,6 @@ pasteHotkey = hs.hotkey.bind({"cmd"}, "v", function()
   end
   pasteHotkey:enable()
 end)
+
 
 hs.alert.show("Hammerspoon config loaded")
