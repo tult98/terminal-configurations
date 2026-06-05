@@ -21,6 +21,32 @@ macos-option-as-alt = left
 keybind = shift+opt+left=csi:1;4D
 keybind = shift+opt+right=csi:1;4C
 
+# Cmd never reaches the TTY, so translate these to Alt+<letter> sequences
+# that Zellij binds (see zellij/.config/zellij/config.kdl). Overrides Ghostty's
+# own splits so Zellij owns the panes.
+keybind = cmd+d=esc:d
+keybind = cmd+shift+d=esc:e
+keybind = cmd+shift+enter=esc:z
+
+# Cmd+arrows move focus between panes. These map to Alt+h/j/k/l, which Zellij
+# binds to MoveFocus by default — no extra Zellij config needed.
+keybind = cmd+left=esc:h
+keybind = cmd+down=esc:j
+keybind = cmd+up=esc:k
+keybind = cmd+right=esc:l
+
+# Cmd+number jumps straight to Zellij tab N. Use the physical digit_ keys —
+# Ghostty's default super+digit_N=goto_tab outranks the logical super+N.
+keybind = cmd+digit_1=esc:1
+keybind = cmd+digit_2=esc:2
+keybind = cmd+digit_3=esc:3
+keybind = cmd+digit_4=esc:4
+keybind = cmd+digit_5=esc:5
+keybind = cmd+digit_6=esc:6
+keybind = cmd+digit_7=esc:7
+keybind = cmd+digit_8=esc:8
+keybind = cmd+digit_9=esc:9
+
 cursor-style = bar
 cursor-style-blink = true
 adjust-cell-height = 10%

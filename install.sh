@@ -2,7 +2,7 @@
 set -e
 
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACKAGES=(zsh wezterm claude-code ghostty hammerspoon)
+PACKAGES=(zsh wezterm claude-code ghostty hammerspoon zellij)
 
 # Check stow is installed
 if ! command -v stow &>/dev/null; then
@@ -27,6 +27,7 @@ backup ~/.config/wezterm/wezterm.lua
 backup ~/.claude/settings.json
 backup ~/.config/ghostty/config
 backup ~/.hammerspoon/init.lua
+backup ~/.config/zellij/config.kdl
 
 echo ""
 echo "=== Stowing packages ==="
@@ -37,15 +38,16 @@ for pkg in "${PACKAGES[@]}"; do
 done
 
 echo ""
-echo "=== Installing CLI tools (Yazi file manager + preview deps) ==="
+echo "=== Installing CLI tools (Zellij + Yazi file manager + preview deps) ==="
 if command -v brew &>/dev/null; then
-  # yazi: file manager · fd/bat/eza: fuzzy-find, syntax-highlighted preview, listings
+  # zellij: terminal multiplexer (auto-launched in Ghostty) · yazi: file manager · neovim: editor ($EDITOR)
+  # fd/bat/eza: fuzzy-find, syntax-highlighted preview, listings
   # poppler/ffmpegthumbnailer/imagemagick/resvg: image/PDF/video/SVG previews
   # sevenzip/jq: archive + JSON previews. (fzf, ripgrep already required by zsh setup)
-  brew install yazi fd bat eza poppler ffmpegthumbnailer sevenzip jq imagemagick resvg
+  brew install zellij yazi neovim fd bat eza poppler ffmpegthumbnailer sevenzip jq imagemagick resvg
 else
   echo "  brew not found — skipping. Install manually:"
-  echo "  brew install yazi fd bat eza poppler ffmpegthumbnailer sevenzip jq imagemagick resvg"
+  echo "  brew install zellij yazi neovim fd bat eza poppler ffmpegthumbnailer sevenzip jq imagemagick resvg"
 fi
 
 echo ""

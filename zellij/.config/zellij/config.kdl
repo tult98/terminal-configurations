@@ -1,0 +1,48 @@
+theme "tokyo-night"
+default_layout "compact"
+
+options {
+    mouse_mode true
+    scroll_buffer_size 10000
+    copy_command "pbcopy"
+    on_force_close "detach"
+    default_shell "zsh"
+}
+
+keybinds {
+    // Ctrl+y → open Yazi in a floating pane that closes when you quit Yazi (q).
+    // Bound at the Zellij level (not zsh) so it fires inside any app — Claude
+    // Code, vim, etc. — not just at the shell prompt. The pane inherits the
+    // focused pane's cwd, so Yazi opens in the current folder.
+    // Available in every mode except "locked" so it never shadows text input.
+    shared_except "locked" {
+        bind "Ctrl y" {
+            Run "yazi" {
+                floating true
+                close_on_exit true
+                name "yazi"
+                width "90%"
+                height "90%"
+                x "5%"
+                y "5%"
+            }
+        }
+
+        // macOS-style pane shortcuts, fed by Ghostty's cmd+* keybinds which
+        // emit these Alt+<letter> sequences (Cmd never reaches the TTY).
+        bind "Alt d" { NewPane "Right"; }       // ⌘D       → vertical split
+        bind "Alt e" { NewPane "Down"; }        // ⇧⌘D      → horizontal split
+        bind "Alt z" { ToggleFocusFullscreen; } // ⇧⌘Enter  → zoom / unzoom
+
+        // ⌘1–⌘9 → jump straight to tab N (fed by Ghostty's cmd+<n> keybinds).
+        bind "Alt 1" { GoToTab 1; }
+        bind "Alt 2" { GoToTab 2; }
+        bind "Alt 3" { GoToTab 3; }
+        bind "Alt 4" { GoToTab 4; }
+        bind "Alt 5" { GoToTab 5; }
+        bind "Alt 6" { GoToTab 6; }
+        bind "Alt 7" { GoToTab 7; }
+        bind "Alt 8" { GoToTab 8; }
+        bind "Alt 9" { GoToTab 9; }
+    }
+}

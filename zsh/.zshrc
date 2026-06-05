@@ -1,3 +1,13 @@
+# ── Zellij auto-launch (Ghostty only) ────────────────────────────────────────
+# Drop straight into the shared "main" Zellij session when opening Ghostty.
+# Guarded so a missing zellij binary can't break the shell. Inside Zellij,
+# Ctrl+y is handled by Zellij's keybind (floating Yazi pane, works in any app);
+# outside it, the _yazi_cd widget below handles Ctrl+y (cwd-on-exit at the
+# shell prompt).
+if [[ "$TERM_PROGRAM" == "ghostty" && -z "$ZELLIJ" ]] && command -v zellij &>/dev/null; then
+  exec zellij attach -c main
+fi
+
 # ── Powerlevel10k instant prompt ─────────────────────────────────────────────
 # Must be at top before any output to enable the instant prompt feature
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -125,10 +135,19 @@ export DISABLE_SPRING=true
 # ws CLI shell integration (workspace tab-completion and env setup)
 command -v ws >/dev/null 2>&1 && eval "$(ws shell-init)"
 
-# ── Yazi launcher ─────────────────────────────────────────────────────────────
-# Ctrl+Y opens Yazi (stock config) and cd's the shell to wherever you quit — the
-# standard cwd-on-exit wrapper from the Yazi docs, bound to a key to dodge the
-# oh-my-zsh yarn plugin's `y`/`yy` aliases. (Default Ctrl+Y is yank/paste.)
+# Default editor: Neovim (modal). Used by Yazi (Enter on a file), git commits,
+# `kubectl edit`, etc. — all in the terminal. If you get stuck: Esc → :wq saves &
+# quits, :q! quits without saving. Run `nvim` then `:Tutor` for the built-in lessons.
+export EDITOR="nvim"
+export VISUAL="nvim"
+
+# ── Yazi launcher (non-Zellij fallback) ───────────────────────────────────────
+# Inside Zellij, Ctrl+Y is handled by Zellij's keybind (floating Yazi pane, see
+# zellij/.config/zellij/config.kdl) so it works in any app, not just at the
+# prompt. This widget only fires OUTSIDE Zellij: it opens Yazi (stock config)
+# and cd's the shell to wherever you quit — the standard cwd-on-exit wrapper from
+# the Yazi docs. Bound to a key to dodge the oh-my-zsh yarn plugin's `y`/`yy`
+# aliases. (Default Ctrl+Y is yank/paste.)
 function _yazi_cd() {
   local tmp cwd
   tmp="$(mktemp -t yazi-cwd.XXXXXX)"

@@ -11,6 +11,7 @@ Personal dotfiles for zsh, WezTerm, Ghostty, Hammerspoon, and Claude Code — ma
 | `ghostty/` | `~/.config/ghostty/config` |
 | `hammerspoon/` | `~/.hammerspoon/init.lua` |
 | `claude-code/` | `~/.claude/settings.json` |
+| `zellij/` | `~/.config/zellij/config.kdl` |
 
 ## Quick start (new machine)
 
@@ -63,9 +64,12 @@ Install these before or after running `install.sh`:
 **WezTerm**
 - [JetBrainsMono Nerd Font](https://www.nerdfonts.com/font-downloads)
 
-**Yazi** (terminal file manager — installed by `install.sh` via Homebrew, no custom config)
-- `yazi` `fd` `bat` `eza` `poppler` `ffmpegthumbnailer` `sevenzip` `jq` `imagemagick` `resvg`
+**Zellij + Yazi** (terminal multiplexer + file manager — installed by `install.sh` via Homebrew)
+- `zellij` `yazi` `fd` `bat` `eza` `poppler` `ffmpegthumbnailer` `sevenzip` `jq` `imagemagick` `resvg`
 
-[Yazi](https://yazi-rs.github.io/) runs on its stock defaults — launch it with `yazi`,
-and press `~` (or `F1`) inside for the full keybinding list. The preview deps above power
-its image/PDF/video/archive previews.
+[Zellij](https://zellij.dev/) auto-launches in Ghostty — every new window attaches to the
+shared `main` session (see the guard at the top of `.zshrc`). Press **Ctrl+y** inside Zellij
+to pop [Yazi](https://yazi-rs.github.io/) up in a **floating pane**; quit Yazi with `q` and the
+pane closes. Outside Zellij, **Ctrl+y** falls back to full-window Yazi that `cd`s the shell to
+wherever you quit. Yazi runs on its stock defaults — press `~` (or `F1`) inside for the full
+keybinding list; the preview deps above power its image/PDF/video/archive previews.
