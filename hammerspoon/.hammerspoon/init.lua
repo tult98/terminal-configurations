@@ -1,7 +1,3 @@
-mouse_follows_focus = hs.loadSpoon("MouseFollowsFocus")
-mouse_follows_focus:configure({})
-mouse_follows_focus:start()
-
 -- hs.hotkey.bind({"alt"}, "space", function()
 --   local wezterm = hs.application.find("WezTerm")
 --   if wezterm then
@@ -14,7 +10,6 @@ mouse_follows_focus:start()
 --     hs.application.open("WezTerm")
 --   end
 -- end)
-
 
 local pasteHotkey
 pasteHotkey = hs.hotkey.bind({"cmd"}, "v", function()
