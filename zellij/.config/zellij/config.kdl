@@ -10,12 +10,30 @@ options {
 }
 
 keybinds {
+    // Free Ctrl+o so it passes through to the running app (Claude Code uses it).
+    // Zellij binds it to "Session" mode by default; unbind everywhere and move
+    // that mode onto Ctrl+b instead.
+    unbind "Ctrl o"
+    normal {
+        bind "Ctrl b" { SwitchToMode "Session"; }
+    }
+
     // Ctrl+y → open Yazi in a floating pane that closes when you quit Yazi (q).
     // Bound at the Zellij level (not zsh) so it fires inside any app — Claude
     // Code, vim, etc. — not just at the shell prompt. The pane inherits the
     // focused pane's cwd, so Yazi opens in the current folder.
     // Available in every mode except "locked" so it never shadows text input.
     shared_except "locked" {
+        // Free Alt+f / Alt+Arrow so they pass through to the running app.
+        // Ghostty maps Opt+Right → ESC-f (Alt+f); Zellij's default binds Alt+f to
+        // ToggleFloatingPanes, which is the "Opt+Right opens a popup pane" bug.
+        // Must be unbound HERE, inside shared_except — a top-level unbind does not
+        // override defaults defined in a shared_* scope. Alt+Arrow defaults to
+        // MoveFocusOrTab; unbind it too so a stray Alt+Arrow can't jump panes
+        // (focus movement is on Cmd+Arrow → Alt h/j/k/l, which stays bound).
+        unbind "Alt f"
+        unbind "Alt Left" "Alt Right" "Alt Up" "Alt Down"
+
         bind "Ctrl y" {
             Run "yazi" {
                 floating true
