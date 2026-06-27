@@ -164,8 +164,8 @@ bindkey '^Y' _yazi_cd
 # ── Prompt & local overrides ──────────────────────────────────────────────────
 # p10k theme config — run `p10k configure` to regenerate ~/.p10k.zsh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-# Machine-specific secrets and env vars (not tracked by git — see zshenv.local.example)
-[[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
+# Machine-specific secrets/env vars are now sourced from ~/.zshenv (loads in
+# non-interactive shells too), so no longer sourced here.
 # aikido-endpoint-cert-config-start
 # Allow Node.js tooling to trust the SafeChain MITM CA while preserving public roots.
 [[ -f "/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-combined-ca.pem" ]] && \

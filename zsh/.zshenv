@@ -26,3 +26,10 @@ export NODE_OPTIONS=--max-old-space-size=8192
 # export REVIEWDOG_GITHUB_API_TOKEN=<your-token>
 # export DANGER_GITHUB_API_TOKEN=<your-token>
 # export GITHUB_TOKEN=<your-token>
+
+# GitLab tokens (set actual values in ~/.zshenv.local)
+# export GITLAB_TOKEN=<your-token>  # read_package_registry scope; installs @ceartas/ui
+
+# Machine-specific secrets and env vars (not tracked by git).
+# Sourced here (not ~/.zshrc) so it also loads in non-interactive shells.
+[[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
