@@ -2,7 +2,18 @@ theme "tokyo-night"
 default_layout "compact"
 
 options {
-    mouse_mode true
+    // Off so Ghostty owns the mouse: native smooth pixel scroll + text
+    // selection, instead of Zellij stepping through scrollback line-by-line.
+    // Keyboard scrollback still available via Scroll mode (Ctrl+s).
+    mouse_mode false
+
+    // URL clicking is Ghostty's job (mouse_mode off = Ghostty owns the mouse):
+    // hold ⌘ and the URL underlines, ⌘+click opens it in the browser.
+    // Keep OSC8 passthrough ON so program-emitted hyperlinks (gh, eza/ls
+    // --hyperlink, build tools) also reach Ghostty as ⌘-clickable links.
+    // Pinned explicitly so a future zellij default change can't silently break it.
+    osc8_hyperlinks true
+
     scroll_buffer_size 10000
     copy_command "pbcopy"
     on_force_close "detach"
