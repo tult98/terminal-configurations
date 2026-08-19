@@ -103,11 +103,13 @@ export PATH="$HOME/.eh-dev/bin:$PATH"
 export PATH="/Users/tult/.flashlight/bin:$PATH"
 
 # ── Headroom (token-optimization proxy for Claude Code) ───────────────────────
-# `headroom` CLI lives in the Python 3.14 framework bin; route Claude Code's API
-# traffic through the local proxy on :8787. Comment out ANTHROPIC_BASE_URL to
-# disable. Verify with: curl -fsS http://localhost:8787/health
+# `headroom` CLI lives in the Python 3.14 framework bin. The proxy is OPT-IN:
+# exporting ANTHROPIC_BASE_URL globally makes Claude Code refuse Remote Control
+# ("only available when using Claude via api.anthropic.com"), so route through it
+# per-command instead:   hr claude      (or: hr claude --resume)
+# Verify the proxy is up with: curl -fsS http://localhost:8787/health
 export PATH="/Library/Frameworks/Python.framework/Versions/3.14/bin:$PATH"
-export ANTHROPIC_BASE_URL="http://localhost:8787"
+hr() { ANTHROPIC_BASE_URL="http://localhost:8787" "$@"; }
 
 # pnpm
 export PNPM_HOME="/Users/tult/Library/pnpm"
