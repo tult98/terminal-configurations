@@ -5,10 +5,21 @@
   },
   "enabledPlugins": {
     "typescript-lsp@claude-plugins-official": true,
-    "ce@ce-marketplace": true
+    "ce@ce-marketplace": true,
+    "ruby-lsp@claude-plugins-official": true,
+    "eh@eh-claude-code": true
   },
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "extraKnownMarketplaces": {
+    "eh-claude-code": {
+      "source": {
+        "source": "git",
+        "url": "git@github.com:Thinkei/eh-claude-code.git",
+        "ref": "stable"
+      }
+    }
+  }
 }

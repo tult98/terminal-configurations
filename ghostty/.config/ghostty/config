@@ -18,6 +18,14 @@ window-padding-y = 10
 window-padding-balance = true
 
 macos-option-as-alt = left
+# Opt+arrows → ESC-b / ESC-f (readline word motion). Both zsh and Claude Code
+# understand these as word-back / word-forward. Sending the default Alt+Arrow
+# CSI (1;3D/C) instead would let Zellij's default Alt+Arrow=MoveFocus eat the
+# keys before the running app sees them — that's the "Opt+Right jumps panes" bug.
+keybind = opt+left=esc:b
+keybind = opt+right=esc:f
+# Shift+Opt+arrows → word selection at the zsh prompt (Claude Code has no
+# selection model, so it ignores these — harmless there).
 keybind = shift+opt+left=csi:1;4D
 keybind = shift+opt+right=csi:1;4C
 

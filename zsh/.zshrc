@@ -102,6 +102,15 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="$HOME/.eh-dev/bin:$PATH"
 export PATH="/Users/tult/.flashlight/bin:$PATH"
 
+# ── Headroom (token-optimization proxy for Claude Code) ───────────────────────
+# `headroom` CLI lives in the Python 3.14 framework bin. The proxy is OPT-IN:
+# exporting ANTHROPIC_BASE_URL globally makes Claude Code refuse Remote Control
+# ("only available when using Claude via api.anthropic.com"), so route through it
+# per-command instead:   hr claude      (or: hr claude --resume)
+# Verify the proxy is up with: curl -fsS http://localhost:8787/health
+export PATH="/Library/Frameworks/Python.framework/Versions/3.14/bin:$PATH"
+hr() { ANTHROPIC_BASE_URL="http://localhost:8787" "$@"; }
+
 # pnpm
 export PNPM_HOME="/Users/tult/Library/pnpm"
 case ":$PATH:" in
@@ -164,8 +173,8 @@ bindkey '^Y' _yazi_cd
 # ── Prompt & local overrides ──────────────────────────────────────────────────
 # p10k theme config — run `p10k configure` to regenerate ~/.p10k.zsh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-# Machine-specific secrets and env vars (not tracked by git — see zshenv.local.example)
-[[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
+# Machine-specific secrets/env vars are now sourced from ~/.zshenv (loads in
+# non-interactive shells too), so no longer sourced here.
 # aikido-endpoint-cert-config-start
 # Allow Node.js tooling to trust the SafeChain MITM CA while preserving public roots.
 [[ -f "/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-combined-ca.pem" ]] && \
@@ -180,3 +189,21 @@ if [[ -f "/Library/Application Support/AikidoSecurity/EndpointProtection/run/end
 fi
 export UV_SYSTEM_CERTS=true
 # aikido-endpoint-pip-cert-config-end
+# aikido-endpoint-ruby-cert-config-start
+# Allow Ruby Bundler to trust the SafeChain MITM CA while preserving public roots.
+[[ -f "/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-ruby-combined-ca.pem" ]] && \
+  export BUNDLE_SSL_CA_CERT="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-ruby-combined-ca.pem"
+# aikido-endpoint-ruby-cert-config-end
+# aikido-endpoint-curl-cert-config-start
+# Allow curl and other OpenSSL-linked tools to trust the SafeChain MITM CA while preserving the system roots.
+[[ -f "/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-openssl-combined-ca.pem" ]] && \
+  export CURL_CA_BUNDLE="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-openssl-combined-ca.pem"
+# aikido-endpoint-curl-cert-config-end
+
+# >>> headroom persistent env >>>
+export HEADROOM_PORT="8787"
+export HEADROOM_HOST="127.0.0.1"
+export HEADROOM_MODE="token"
+export HEADROOM_BACKEND="anthropic"
+export HEADROOM_TELEMETRY="off"
+# <<< headroom persistent env <<<
