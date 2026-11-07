@@ -4,9 +4,9 @@
 # Ctrl+y is handled by Zellij's keybind (floating Yazi pane, works in any app);
 # outside it, the _yazi_cd widget below handles Ctrl+y (cwd-on-exit at the
 # shell prompt).
-if [[ "$TERM_PROGRAM" == "ghostty" && -z "$ZELLIJ" ]] && command -v zellij &>/dev/null; then
-  exec zellij attach -c main
-fi
+# if [[ "$TERM_PROGRAM" == "ghostty" && -z "$ZELLIJ" ]] && command -v zellij &>/dev/null; then
+#   exec zellij attach -c main
+# fi
 
 # ── Powerlevel10k instant prompt ─────────────────────────────────────────────
 # Must be at top before any output to enable the instant prompt feature
@@ -91,16 +91,15 @@ export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 # LLVM
 export PATH="/opt/homebrew/opt/llvm@16/bin:$PATH"
 
-# PostgreSQL — hardcoded Cellar path; replace with asdf or `brew link postgresql@15` if it breaks
-export PATH="/opt/homebrew/Cellar/postgresql@15/15.13/bin:$PATH"
+# PostgreSQL — version-pinned Cellar path; only added if present
+[[ -d /opt/homebrew/Cellar/postgresql@15/15.13/bin ]] && export PATH="/opt/homebrew/Cellar/postgresql@15/15.13/bin:$PATH"
 
 # Go
-export PATH="$PATH:/Users/tult/go/bin"
+[[ -d "$HOME/go/bin" ]] && export PATH="$PATH:$HOME/go/bin"
 
-# Local bin, eh-dev, flashlight
+# Local bin, flashlight
 export PATH="$PATH:$HOME/.local/bin"
-export PATH="$HOME/.eh-dev/bin:$PATH"
-export PATH="/Users/tult/.flashlight/bin:$PATH"
+[[ -d "$HOME/.flashlight/bin" ]] && export PATH="$HOME/.flashlight/bin:$PATH"
 
 # ── Headroom (token-optimization proxy for Claude Code) ───────────────────────
 # `headroom` CLI lives in the Python 3.14 framework bin. The proxy is OPT-IN:
@@ -108,11 +107,11 @@ export PATH="/Users/tult/.flashlight/bin:$PATH"
 # ("only available when using Claude via api.anthropic.com"), so route through it
 # per-command instead:   hr claude      (or: hr claude --resume)
 # Verify the proxy is up with: curl -fsS http://localhost:8787/health
-export PATH="/Library/Frameworks/Python.framework/Versions/3.14/bin:$PATH"
+[[ -d /Library/Frameworks/Python.framework/Versions/3.14/bin ]] && export PATH="/Library/Frameworks/Python.framework/Versions/3.14/bin:$PATH"
 hr() { ANTHROPIC_BASE_URL="http://localhost:8787" "$@"; }
 
 # pnpm
-export PNPM_HOME="/Users/tult/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -126,23 +125,16 @@ if command -v pyenv >/dev/null 2>&1; then
   PATH=$(pyenv root)/shims:$PATH
 fi
 
-# asdf — multi-language version manager
-. "/opt/homebrew/opt/asdf/libexec/asdf.sh"
-fpath=(${ASDF_DIR}/completions $fpath)
+# rbenv — Ruby version manager
+command -v rbenv >/dev/null 2>&1 && eval "$(rbenv init - zsh)"
 autoload -Uz compinit && compinit
 
 # ── React Native / Android ────────────────────────────────────────────────────
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+[[ -d /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home ]] && export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
 export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
-
-# ── Employment Hero ───────────────────────────────────────────────────────────
-# Disables Rails Spring pre-loader for more predictable boot times
-export DISABLE_SPRING=true
-# ws CLI shell integration (workspace tab-completion and env setup)
-command -v ws >/dev/null 2>&1 && eval "$(ws shell-init)"
 
 # Default editor: Neovim (modal). Used by Yazi (Enter on a file), git commits,
 # `kubectl edit`, etc. — all in the terminal. If you get stuck: Esc → :wq saves &
@@ -175,31 +167,6 @@ bindkey '^Y' _yazi_cd
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 # Machine-specific secrets/env vars are now sourced from ~/.zshenv (loads in
 # non-interactive shells too), so no longer sourced here.
-# aikido-endpoint-cert-config-start
-# Allow Node.js tooling to trust the SafeChain MITM CA while preserving public roots.
-[[ -f "/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-combined-ca.pem" ]] && \
-  export NODE_EXTRA_CA_CERTS="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-combined-ca.pem"
-# aikido-endpoint-cert-config-end
-# aikido-endpoint-pip-cert-config-start
-# Allow Python package managers to trust the SafeChain MITM CA while preserving user-provided roots.
-if [[ -f "/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-pip-combined-ca.pem" ]]; then
-  export PIP_CERT="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-pip-combined-ca.pem"
-  export REQUESTS_CA_BUNDLE="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-pip-combined-ca.pem"
-  export POETRY_CERTIFICATES_PYPI_CERT="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-pip-combined-ca.pem"
-fi
-export UV_SYSTEM_CERTS=true
-# aikido-endpoint-pip-cert-config-end
-# aikido-endpoint-ruby-cert-config-start
-# Allow Ruby Bundler to trust the SafeChain MITM CA while preserving public roots.
-[[ -f "/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-ruby-combined-ca.pem" ]] && \
-  export BUNDLE_SSL_CA_CERT="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-ruby-combined-ca.pem"
-# aikido-endpoint-ruby-cert-config-end
-# aikido-endpoint-curl-cert-config-start
-# Allow curl and other OpenSSL-linked tools to trust the SafeChain MITM CA while preserving the system roots.
-[[ -f "/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-openssl-combined-ca.pem" ]] && \
-  export CURL_CA_BUNDLE="/Library/Application Support/AikidoSecurity/EndpointProtection/run/endpoint-protection-openssl-combined-ca.pem"
-# aikido-endpoint-curl-cert-config-end
-
 # >>> headroom persistent env >>>
 export HEADROOM_PORT="8787"
 export HEADROOM_HOST="127.0.0.1"
@@ -207,3 +174,7 @@ export HEADROOM_MODE="token"
 export HEADROOM_BACKEND="anthropic"
 export HEADROOM_TELEMETRY="off"
 # <<< headroom persistent env <<<
+
+# ── Work overlay (optional) ───────────────────────────────────────────────────
+# ~/.zshrc.work comes from the private eh-dotfiles repo; absent on personal machines.
+[[ -r ~/.zshrc.work ]] && source ~/.zshrc.work
