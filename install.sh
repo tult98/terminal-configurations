@@ -64,6 +64,21 @@ else
 fi
 
 echo ""
+echo "=== Installing Oh My Zsh, Powerlevel10k and plugins (skipped if present) ==="
+# Plain git clones — the official Oh My Zsh installer would overwrite ~/.zshrc.
+ZSH_DIR="$HOME/.oh-my-zsh"
+if command -v git &>/dev/null; then
+  clone() { [[ -d "$2" ]] && echo "  have $(basename "$2")" || { echo "  cloning $(basename "$2")"; git clone -q --depth=1 "$1" "$2"; }; }
+  clone https://github.com/ohmyzsh/ohmyzsh.git "$ZSH_DIR"
+  clone https://github.com/romkatv/powerlevel10k.git "$ZSH_DIR/custom/themes/powerlevel10k"
+  clone https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH_DIR/custom/plugins/zsh-autosuggestions"
+  clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_DIR/custom/plugins/zsh-syntax-highlighting"
+  clone https://github.com/zsh-users/zsh-history-substring-search.git "$ZSH_DIR/custom/plugins/zsh-history-substring-search"
+else
+  echo "  git not found — skipping (install Xcode CLT: xcode-select --install)"
+fi
+
+echo ""
 echo "=== Wiring Claude Code status line into ~/.claude/settings.json ==="
 SETTINGS="$HOME/.claude/settings.json"
 if ! command -v jq &>/dev/null; then

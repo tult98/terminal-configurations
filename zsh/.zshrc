@@ -37,7 +37,7 @@ plugins=(
   zsh-history-substring-search
 )
 
-source $ZSH/oh-my-zsh.sh
+[[ -r $ZSH/oh-my-zsh.sh ]] && source $ZSH/oh-my-zsh.sh   # installed by install.sh
 
 # ── Key bindings ──────────────────────────────────────────────────────────────
 # Arrow keys navigate history filtered by current input (requires zsh-history-substring-search)
