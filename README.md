@@ -1,16 +1,15 @@
 # Terminal Configurations
 
-Personal dotfiles for zsh, WezTerm, Ghostty, Hammerspoon, and Claude Code — managed with [GNU Stow](https://www.gnu.org/software/stow/).
+Personal dotfiles for zsh, Ghostty, Zellij, Hammerspoon, and Claude Code — managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
 ## Contents
 
 | Package | Symlinks to |
 |---|---|
 | `zsh/` | `~/.zshrc`, `~/.zshenv`, `~/.zprofile`, `~/.p10k.zsh` |
-| `wezterm/` | `~/.config/wezterm/wezterm.lua` |
 | `ghostty/` | `~/.config/ghostty/config` |
 | `hammerspoon/` | `~/.hammerspoon/init.lua` |
-| `claude-code/` | `~/.claude/settings.json` |
+| `claude-code/` | `~/.claude/statusline.sh` only. `install.sh` merges the `statusLine` key into your `~/.claude/settings.json` and leaves every other setting alone |
 | `zellij/` | `~/.config/zellij/config.kdl` |
 
 ## Quick start (new machine)
@@ -46,7 +45,14 @@ cd ~/terminal-configurations && git pull
 
 All tokens and credentials go in `~/.zshenv.local` — it is **not tracked by git**.
 
-See [`zshenv.local.example`](./zshenv.local.example) for the full list of expected variables. Sourced at the end of `.zshrc`.
+See [`zshenv.local.example`](./zshenv.local.example). Sourced from `.zshenv`, so it loads in every zsh shell.
+
+## Work machine (Employment Hero)
+
+Work-only config is **not** in this repo. It lives in a separate private repo, `eh-dotfiles`
+(`~/.zshrc.work`, the EH Claude plugin overlay, EH token names). On a work machine, run this repo's
+`install.sh` first, then `eh-dotfiles/install.sh`. `.zshrc` ends with
+`[[ -r ~/.zshrc.work ]] && source ~/.zshrc.work`, so personal machines need nothing extra.
 
 ## Dependencies
 
@@ -61,8 +67,15 @@ Install these before or after running `install.sh`:
 - [asdf](https://asdf-vm.com/)
 - [pyenv](https://github.com/pyenv/pyenv)
 
-**WezTerm**
+**Fonts**
 - [JetBrainsMono Nerd Font](https://www.nerdfonts.com/font-downloads)
+
+**tmux** (binary only — installed by `install.sh`)
+- Used by the [claude-code-sessions-manager](https://github.com/tult98/claude-code-sessions-manager) VS Code extension, which runs its own private tmux server and never loads `tmux.conf`.
+
+**Parked packages** (kept in the repo, *not* stowed by `install.sh`)
+- `wezterm/` and `tmux/` — not in daily use. To re-enable, add the package name to `PACKAGES` in `install.sh`
+  (and `backup` its target path); for WezTerm also install the font above.
 
 **Zellij + Yazi** (terminal multiplexer + file manager — installed by `install.sh` via Homebrew)
 - `zellij` `yazi` `fd` `bat` `eza` `poppler` `ffmpegthumbnailer` `sevenzip` `jq` `imagemagick` `resvg`
