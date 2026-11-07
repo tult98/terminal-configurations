@@ -2,3 +2,4 @@
 *.local
 *.wasm
 .serena/
+*.aikido-backup
