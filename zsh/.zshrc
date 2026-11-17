@@ -88,11 +88,8 @@ export PATH="/usr/local/bin:$PATH"
 # Java (OpenJDK via Homebrew)
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
-# LLVM
-export PATH="/opt/homebrew/opt/llvm@16/bin:$PATH"
-
-# PostgreSQL — version-pinned Cellar path; only added if present
-[[ -d /opt/homebrew/Cellar/postgresql@15/15.13/bin ]] && export PATH="/opt/homebrew/Cellar/postgresql@15/15.13/bin:$PATH"
+# PostgreSQL 18 (Homebrew, keg-only)
+[[ -d /opt/homebrew/opt/postgresql@18/bin ]] && export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
 
 # Go
 [[ -d "$HOME/go/bin" ]] && export PATH="$PATH:$HOME/go/bin"
